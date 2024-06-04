@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { DomSanitizer } from '@angular/platform-browser';
 import { ngxLoadingAnimationTypes } from 'ngx-loading';
 import { NgxLoadingComponent } from 'ngx-loading';
+import { AuthFGSService } from '../../services/autorization/auth-fgs.service';
 
 const PrimaryWhite = '#ffffff';
 const SecondaryGrey = '#ccc';
@@ -54,7 +55,7 @@ const ALERTS: Alert[] = [
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   @ViewChild('ngxLoading', { static: false })
   ngxLoadingComponent!: NgxLoadingComponent;
   @ViewChild('customLoadingTemplate', { static: false })
@@ -79,7 +80,7 @@ export class RegisterComponent {
 	alerts: Alert[]=[];
   userForm: FormGroup;
   isFormSubmitted: boolean = false;
-  constructor(private authGoogleService: AuthGoogleService) { 
+  constructor(private authGoogleService: AuthGoogleService,private authorifgs:AuthFGSService ) { 
     this.userForm =  new FormGroup({
       firstName: new FormControl("",[Validators.required]),
       lastName: new FormControl("",[Validators.required,Validators.minLength(4)]),
@@ -89,11 +90,16 @@ export class RegisterComponent {
       zipcode: new FormControl(""),
       isAgree: new FormControl(false)
     })
-  
+ 
     this.reset();}
 
  
+    ngOnInit() {
 
+      this.authorifgs.GetUserById(1).subscribe((data)=>{
+        console.log(JSON.stringify( data))
+      })
+    }
 	close(alert: Alert) {
 		this.alerts.splice(this.alerts.indexOf(alert), 1);
 	}
