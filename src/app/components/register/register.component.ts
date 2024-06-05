@@ -95,8 +95,7 @@ export class RegisterComponent implements OnInit {
 
  
     ngOnInit() {
-
-      this.authorifgs.GetUserById(1).subscribe((data)=>{
+     this.authorifgs.GetUserById("sosagabriel79@gmail.com").subscribe((data)=>{
         console.log(JSON.stringify( data))
       })
     }

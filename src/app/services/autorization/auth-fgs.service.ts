@@ -7,10 +7,12 @@ import { IUser } from '../../interfaces/IUser';
   providedIn: 'root'
 })
 export class AuthFGSService {
-  urluser="http://localhost:3000/users"
+  //podemos pasar query params a las url
+  urluser="http://localhost:3000/users?email"
   constructor(private http:HttpClient) { }
- GetUserById(id:number):Observable<IUser[]>{
-  const miurl= `${this.urluser}/${id}`;
+ GetUserById(email:string):Observable<IUser[]>{
+  const miurl= `${this.urluser}=${email}`;
+  console.log(miurl)
   return this.http.get<IUser[]>(miurl);
  }
 }
