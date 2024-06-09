@@ -1,0 +1,100 @@
+<div class="background-dialog">
+    <div class="row g-3">
+        <div class="col-md-5"> </div>
+        <div class="col-md-4">
+            <h1 class="fntstyletitle"> Ingrese sus datos </h1>
+        </div>
+        <div class="col-md-4"> </div>
+
+
+    </div>
+
+    <form class="row g-3 needs-validation" [formGroup]="userForm">
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4">
+            <label class="form-label">Nombre de compania</label>
+            <input type="text" class="form-control" formControlName="company_name">
+            <div class="text-danger"
+                *ngIf="userForm.controls['company_name'].invalid && (isFormSubmitted || userForm.controls['company_name'].touched || userForm.controls['company_name'].dirty)">
+                <span *ngIf="userForm.controls['company_name'].errors?.['required']">This Is Required</span>
+                <span *ngIf="userForm.controls['company_name'].errors?.['minlength']">No tiene la longitud correcta </span>
+            </div>
+        </div>
+     
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <label class="form-label">Telefono</label>
+            <input type="text" class="form-control" formControlName="telephone">
+            <div class="text-danger"
+                *ngIf="userForm.controls['telephone'].invalid   && (userForm.controls['telephone'].touched || userForm.controls['telephone'].dirty)">
+                <span *ngIf="userForm.controls['telephone'].errors?.['required']"> Se requiere un numero de telefono
+                </span>
+                <span *ngIf="userForm.controls['telephone'].errors?.['pattern']">No tiene formato de telefono </span>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-6">
+            <label class="form-label">Ciudad</label>
+            <input type="text" class="form-control" formControlName="city">
+            <div class="text-danger"
+                *ngIf="userForm.controls['city'].invalid   && (userForm.controls['city'].touched || userForm.controls['city'].dirty)">
+                <span *ngIf="userForm.controls['city'].errors?.['required']"> Se requiere una ciudad </span>
+                <span *ngIf="userForm.controls['city'].errors?.['minlength']">No tiene la longitud correcta </span>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+
+        <div class="col-md-3">
+            <label class="form-label">Codigo Postal</label>
+            <input type="text" class="form-control" formControlName="zipcode">
+            <div class="text-danger"
+                *ngIf="userForm.controls['zipcode'].invalid   && (userForm.controls['zipcode'].touched || userForm.controls['zipcode'].dirty)">
+                <span *ngIf="userForm.controls['zipcode'].errors?.['required']"> Se requiere una ciudad </span>
+                <span *ngIf="userForm.controls['zipcode'].errors?.['minlength']">No tiene la longitud correca </span>
+            </div>
+        </div>
+        
+        <div class="col-md-4">  </div>
+        <div class="col-md-4">  </div>
+        <div class="col-md-6">
+            @if (
+                ((userForm.controls['zipcode'].errors?.['required'])||
+                (userForm.controls['zipcode'].errors?.['minlength'])||
+                (userForm.controls['city'].errors?.['required'])||
+                (userForm.controls['city'].errors?.['minlength'])||
+                (userForm.controls['telephone'].errors?.['required'])||
+                (userForm.controls['telephone'].errors?.['pattern'])||
+                (userForm.controls['company_name'].errors?.['required'])||
+                (userForm.controls['company_name'].errors?.['minlength']))
+            ) {
+            <p class="lora fntstyle">
+                <mat-icon fontIcon="error"></mat-icon>
+            Debe cargar todos los datos para poder avanzar</p>    }
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
+        <button
+        matTooltip="Confirmar para avanzar"
+        mat-raised-button class="btn-1" type="button" (click)="onSubmit()" 
+        [disabled]="(userForm.controls['zipcode'].errors?.['required'])||
+        (userForm.controls['zipcode'].errors?.['minlength'])||
+        (userForm.controls['city'].errors?.['required'])||
+        (userForm.controls['city'].errors?.['minlength'])||
+        (userForm.controls['telephone'].errors?.['required'])||
+        (userForm.controls['telephone'].errors?.['pattern'])||
+        (userForm.controls['company_name'].errors?.['required'])||
+        (userForm.controls['company_name'].errors?.['minlength'])">Confirmar</button>
+        </div>
+    </form>
+</div>

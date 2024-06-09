@@ -1,0 +1,25 @@
+.background-dialog{
+    background-color: white;
+}
+
+.btn-1 {
+    background-color: rgb(24, 49, 150)!important;
+    border-radius: 0 px !important; 
+  }
+
+  .lora {
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    color:rgb(15, 14, 14);
+  }
+  .fntstyle{
+    background-color: rgb(239, 203, 198)!important;
+    border-radius: 111 px !important; 
+  }
+
+  .fntstyletitle {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+  

@@ -1,53 +1,80 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthGoogleService } from '../../services/googleauth/auth-google.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ngxLoadingAnimationTypes } from 'ngx-loading';
 import { NgxLoadingComponent } from 'ngx-loading';
 import { AuthFGSService } from '../../services/autorization/auth-fgs.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { IUser } from '../../interfaces/IUser';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from './modal/modal.component';
+import { IUserBussiness } from '../../interfaces/IUserBussiness';
 
 const PrimaryWhite = '#ffffff';
 const SecondaryGrey = '#ccc';
 const PrimaryRed = '#dd0031';
 const SecondaryBlue = '#1976d2';
 interface Alert {
-	type: string;
-	message: string;
+  type: string;
+  message: string;
 }
 
+export interface DialogData {
+  animal: string;
+  name: string;
+}
+
+export interface DataForm {
+  companyName:string;
+  phone:string;
+  city:string;
+  zipcode:string;
+  isCompany: boolean ,
+  IsProvider: boolean;
+  IsNew: boolean;
+}
+export interface SelectModal {
+  NewCompany: boolean;
+  NewProvider: boolean;
+  AddUserToCompant: boolean;
+  AddUserToProvider: boolean;
+}
+
+
 const ALERTS: Alert[] = [
-	{
-		type: 'success',
-		message: 'This is an success alert',
-	},
-	{
-		type: 'info',
-		message: 'This is an info alert',
-	},
-	{
-		type: 'warning',
-		message: 'This is a warning alert',
-	},
-	{
-		type: 'danger',
-		message: 'This is a danger alert',
-	},
-	{
-		type: 'primary',
-		message: 'This is a primary alert',
-	},
-	{
-		type: 'secondary',
-		message: 'This is a secondary alert',
-	},
-	{
-		type: 'light',
-		message: 'This is a light alert',
-	},
-	{
-		type: 'dark',
-		message: 'This is a dark alert',
-	},
+  {
+    type: 'success',
+    message: 'This is an success alert',
+  },
+  {
+    type: 'info',
+    message: 'This is an info alert',
+  },
+  {
+    type: 'warning',
+    message: 'This is a warning alert',
+  },
+  {
+    type: 'danger',
+    message: 'This is a danger alert',
+  },
+  {
+    type: 'primary',
+    message: 'This is a primary alert',
+  },
+  {
+    type: 'secondary',
+    message: 'This is a secondary alert',
+  },
+  {
+    type: 'light',
+    message: 'This is a light alert',
+  },
+  {
+    type: 'dark',
+    message: 'This is a dark alert',
+  },
 ];
 
 @Component({
@@ -69,6 +96,36 @@ export class RegisterComponent implements OnInit {
   public secondaryColour = SecondaryGrey;
   public coloursEnabled = true;
   public loadingTemplate!: TemplateRef<any>;
+  public returnDialog:boolean=false;
+  public dataselect: SelectModal = {
+    NewCompany: false,
+    NewProvider: false,
+    AddUserToCompant: false,
+    AddUserToProvider: false,
+  }
+public selectinfo:DataForm={
+  companyName:"",
+  phone:"",
+  city:"",
+  zipcode:"",
+  isCompany:false,
+  IsProvider:false,
+  IsNew:false,
+}
+
+public SendDatas:IUserBussiness={
+  email_user: "",
+  name_user: "",
+  company_name: "",
+  zipcode_user:"",
+  isProvider:false,
+  isCompany:false,
+  isNew:false,
+  phone:"",
+  city_user:"",
+  isValidateForOwner:false,
+}
+
   public config = {
     animationType: ngxLoadingAnimationTypes.none,
     primaryColour: this.primaryColour,
@@ -77,52 +134,110 @@ export class RegisterComponent implements OnInit {
     backdropBorderRadius: '3px',
   };
 
-	alerts: Alert[]=[];
-  userForm: FormGroup;
-  isFormSubmitted: boolean = false;
-  constructor(private authGoogleService: AuthGoogleService,private authorifgs:AuthFGSService ) { 
-    this.userForm =  new FormGroup({
-      firstName: new FormControl("",[Validators.required]),
-      lastName: new FormControl("",[Validators.required,Validators.minLength(4)]),
-      userName:  new FormControl("",[Validators.required,Validators.email]),
-      city: new FormControl(""),
-      state: new FormControl(""),
-      zipcode: new FormControl(""),
-      isAgree: new FormControl(false)
-    })
- 
-    this.reset();}
+  alerts: Alert[] = [];
 
- 
-    ngOnInit() {
-     this.authorifgs.GetUserById("sosagabriel79@gmail.com").subscribe((data)=>{
-        console.log(JSON.stringify( data))
-      })
-    }
-	close(alert: Alert) {
-		this.alerts.splice(this.alerts.indexOf(alert), 1);
-	}
-  onSubmit() {
-    const isFormValid = this.userForm.valid;
-    debugger;
-    this.isFormSubmitted =  true;
+  constructor(private authGoogleService: AuthGoogleService, private authorifgs: AuthFGSService, public dialog: MatDialog) {
+   
+    this.reset();
   }
-	reset() {
-		this.alerts = Array.from(ALERTS);
-	}
- showData(){
+
+
+  ngOnInit() {
+   
+    this.authorifgs.GetUserById("sosagabriel79@gmail.com").subscribe({
+      next: data => {
+        console.log('JSON Data:', JSON.stringify(data))
+      },
+      error: error => {
+        console.error('Error fetching JSON data:', error)
+      }
+    }
+    );
+  }
+
+
+  close(alert: Alert) {
+    this.alerts.splice(this.alerts.indexOf(alert), 1);
+  }
+
+  reset() {
+    this.alerts = Array.from(ALERTS);
+  }
+  showData() {
+    console.log(this.authGoogleService.getProfile() )
+    const data = JSON.stringify(this.authGoogleService.getProfile())
+    console.log(data);
+  }
+
+  getToken() {
+    const data = this.authGoogleService.getToken();
+    console.log(data);
+  }
+
+
+  //Bloque de codigo del modal
+  openDialog(datax: string): void {
+    this.SendDatas={
+      email_user: "",
+      name_user: "",
+      company_name: "",
+      zipcode_user:"",
+      isProvider:false,
+      isCompany:false,
+      isNew:false,
+      phone:"",
+      city_user:"",
+      isValidateForOwner:false,
+    }
+    if (datax == 'Newcompany') {
+this.dataselect.NewCompany=true;
+    }
+    if (datax == 'Newprovider') {
+      this.dataselect.NewProvider=true;
+    }
+    if (datax == 'addCompany') {
+      this.dataselect.AddUserToCompant=true;
+    }
+    if (datax == 'addProvider') {
+      this.dataselect.AddUserToProvider=true;
+    }
+
+
+    const dialogRef = this.dialog.open(ModalComponent, {
+      data:this.dataselect,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("el valorde resul vale "+result);
+      if (result!=undefined){
+        this.selectinfo=result
+      }
+      
+      this.returnDialog=true
+      console.log(JSON.stringify(this.selectinfo))
+    });
+    //debemos limpiar las variables porque quedan guardadas con el valor actual...
+    this.dataselect   = {
+      NewCompany: false,
+      NewProvider: false,
+      AddUserToCompant: false,
+      AddUserToProvider: false,
+    }
+  }
+
+
+  SaveChanges(){
+   this.SendDatas.email_user=this.authGoogleService.getProfile()["email"];
+    this.SendDatas.company_name=this.selectinfo.companyName;
+    this.SendDatas.city_user=this.selectinfo.city;
+    this.SendDatas.isCompany=this.selectinfo.isCompany;
+    this.SendDatas.isNew=this.selectinfo.IsNew;
+    this.SendDatas.isProvider=this.selectinfo.IsProvider;
+    this.SendDatas.isValidateForOwner=this.selectinfo.IsNew;//si es nuevo siempre en true
+    this.SendDatas.phone=this.selectinfo.phone;
+    this.SendDatas.zipcode_user=this.selectinfo.zipcode;
+    this.SendDatas.name_user=this.authGoogleService.getProfile()["given_name"]+" "+this.authGoogleService.getProfile()["family_name"];
+ console.log(JSON.stringify(this.SendDatas))
  
-
-const data = JSON.stringify(this.authGoogleService.getProfile())
-
-console.log(data);
- }
-
- 
- getToken(){
-  const data = this.authGoogleService.getToken() ;
-  console.log(data);
- }
-
-
+  }
 }

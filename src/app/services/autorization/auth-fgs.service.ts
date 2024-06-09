@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IUser } from '../../interfaces/IUser';
@@ -13,6 +13,6 @@ export class AuthFGSService {
  GetUserById(email:string):Observable<IUser[]>{
   const miurl= `${this.urluser}=${email}`;
   console.log(miurl)
-  return this.http.get<IUser[]>(miurl);
+  return this.http.get<IUser[]>(miurl );
  }
 }

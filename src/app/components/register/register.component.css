@@ -2,3 +2,59 @@
     flex: 1 1 auto;
   }
   
+  
+  section {
+    display: table;
+  }
+  
+  .example-label {
+    display: table-cell;
+    font-size: 14px;
+    margin-left: 8px;
+    min-width: 120px;
+  }
+  
+  .example-button-row {
+    display: table-cell;
+    max-width: 600px;
+  }
+  
+  .example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  
+  .example-flex-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .example-button-container {
+    display: flex;
+    justify-content: center;
+    width: 120px;
+  }
+  
+  .btn-1 {
+    background-color: rgb(24, 150, 62)!important;
+    border-radius: 0 px !important; 
+  }
+  .btn-2 {
+    background-color: rgb(33, 27, 164)!important;
+    border-radius: 0 px !important; 
+  }
+  .fntstyletitle {
+    margin-top: 10px;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 35px;
+    font-weight: 1600;
+    font-style: normal;
+  }
+  
+  .carrois-gothic-regular {
+    font-family: "Carrois Gothic", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    font-style: normal;
+  }
+  

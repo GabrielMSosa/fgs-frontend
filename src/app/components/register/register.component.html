@@ -12,7 +12,7 @@
         <mat-icon>account_circle</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="showData()">
           <mat-icon>dialpad</mat-icon>
           <span>Redial</span>
         </button>
@@ -20,7 +20,7 @@
           <mat-icon>voicemail</mat-icon>
           <span>Check voice mail</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item  (click)="getToken()">
           <mat-icon>notifications_off</mat-icon>
           <span>Disable alerts</span>
         </button>
@@ -29,67 +29,59 @@
   </mat-toolbar>
  
   <!-- This header will *not* be styled because it is outside `.mat-typography` -->
-  <h1 align="center">Ingrese sus datos</h1>
+  <h1 class="fntstyletitle" align="center">Ingrese sus datos</h1>
+   
+  <div  class="row g-3">
+    <div class="col-md-12"></div>
 
-  <form class="row g-3 needs-validation" [formGroup]="userForm">
-    <div class="col-md-4">
-        <label class="form-label">First name</label>
-        <input type="text" class="form-control" formControlName="firstName">
-        <div class="text-danger" *ngIf="userForm.controls['firstName'].invalid && (isFormSubmitted || userForm.controls['firstName'].touched || userForm.controls['firstName'].dirty)">
-           <span *ngIf="userForm.controls['firstName'].errors?.['required']">This Is Required</span>
-        </div>
+
+    <div class="col-md-3"></div>
+    <div class="col-md-8">
+    <p class="carrois-gothic-regular ">Seleccione un boton según las opciones disponibles:</p>
+    <ul>
+      <li> <p class="carrois-gothic-regular ">Si quiere crear una compania presione  <em>"Crear Compania"</em>. </p>  </li>
+      <li> <p class="carrois-gothic-regular "> Si quiere crear un proveedor presione <em>"Crear Proveedor"</em></p> </li>
+      <li> <p class="carrois-gothic-regular "> Si quiere unirse a una compania existente presione <em>"Unirme a Compania"</em></p> </li>
+      <li> <p class="carrois-gothic-regular "> Si quiere unirse a un proveedor existente presione <em>"Unirme a Proveedor"</em></p> </li>
+     </ul>
+     <p class="carrois-gothic-regular ">Una vez finalizado un formulario presione <em>"Guardar" </em></p>
     </div>
-    <div class="col-md-4">
-        <label class="form-label">Last name</label>
-        <input type="text" class="form-control"  formControlName="lastName">
-        <div class="text-danger" *ngIf="userForm.controls['lastName'].invalid   && (userForm.controls['lastName'].touched || userForm.controls['lastName'].dirty)">
-            <span *ngIf="userForm.controls['lastName'].errors?.['required']"> This IS Required </span>
-            <span *ngIf="userForm.controls['lastName'].errors?.['minlength']"> MIn 4 Charactors Required </span>
-        </div>
+   
+    <div class="col-md-2"></div>
+  <div class="col-md-2">
+    <button 
+    matTooltip ="Si queres crear tu propia compania"
+    mat-raised-button class="btn-1" (click)="openDialog('Newcompany')">Crear Compania</button>
+  </div>
+<div class="col-md-2"> 
+    <button 
+    matTooltip ="Si queres crear tu propio proveedor"
+    mat-raised-button class="btn-1" (click)="openDialog('Newprovider')">Crear Proveedor</button>
+</div>
+<div class="col-md-2">
+  <button mat-raised-button 
+  matTooltip ="Si queres unirte a una compania existente"
+  class="btn-1" (click)="openDialog('addCompany')">Unirme a Compania</button>
+</div>
+<div class="col-md-2">
+  <button mat-raised-button
+  matTooltip ="Si queres unirte a un proveedor existente"
+  class="btn-1" (click)="openDialog('addProvider')">Unirme a Proveedor</button>
+</div>
+    <div class="col-md-12"></div>
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+      <button 
+       matTooltip ="Presione para continuar"
+      [disabled]="(!this.selectinfo.isCompany)&&(!this.selectinfo.IsProvider)"
+      (click)="SaveChanges()"
+      mat-raised-button class="btn-2">Guardar</button>
     </div>
-    <div class="col-md-4">
-        <label class="form-label">Username</label>
-        <div class="input-group has-validation">
-            <span class="input-group-text" id="inputGroupPrepend">&#64;</span>
-            <input type="text" class="form-control" formControlName="userName">
-        </div>
-        <div class="text-danger" *ngIf="userForm.controls['userName'].invalid  && (userForm.controls['userName'].touched || userForm.controls['userName'].dirty)">
-            <span *ngIf="userForm.controls['userName'].errors?.['required']"> This IS Required </span>
-            <span *ngIf="userForm.controls['userName'].errors?.['email']"> Email Is Not Proper </span>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <label class="form-label">City</label>
-        <input type="text" class="form-control"  formControlName="city">
-        
-    </div>
-    <div class="col-md-3">
-        <label class="form-label">State</label>
-        <select class="form-select" formControlName="state">
-            <option selected disabled value="">Choose...</option>
-            <option>...</option>
-        </select>
-        
-    </div>
-    <div class="col-md-3">
-        <label class="form-label">Zip</label>
-        <input type="text" class="form-control" formControlName="zipcode">
-         
-    </div>
-    <div class="col-12">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" formControlName="isAgree">
-            <label class="form-check-label">
-                Agree to terms and conditions
-            </label>
-          
-        </div>
-    </div>
-    <div class="col-12">
-        <button class="btn btn-primary" type="button" (click)="onSubmit()">Submit form</button>
-    </div>
-</form>
-  
+  </div>
+<!--
+ 
+-->
+  <!--
 <ngx-loading
 [show]="loading"
 [config]="{
@@ -99,7 +91,7 @@
 }"
 [template]="loadingTemplate"
 ></ngx-loading>
-
+-->
 <!--
 
 
