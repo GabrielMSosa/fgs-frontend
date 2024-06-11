@@ -25,7 +25,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { RegisterComponent } from './components/register/register.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatListModule} from '@angular/material/list';
- 
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSelectModule} from '@angular/material/select';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +54,9 @@ import {MatListModule} from '@angular/material/list';
      MatDividerModule,
      MatDialogModule,
      MatTooltipModule,
-     MatListModule
+     MatListModule,
+     MatSnackBarModule,
+     MatSelectModule
   ],
   providers: [
     provideAnimationsAsync()

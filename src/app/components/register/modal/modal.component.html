@@ -11,9 +11,15 @@
 
     <form class="row g-3 needs-validation" [formGroup]="userForm">
         <div class="col-md-4"></div>
-        
+
+        @if (data.NewCompany||data.NewProvider) {
         <div class="col-md-4">
+        @if (data.NewCompany) {
             <label class="form-label">Nombre de compania</label>
+        }
+        @if (data.NewProvider) {
+            <label class="form-label">Nombre del Proveedor</label>
+        }
             <input type="text" class="form-control" formControlName="company_name">
             <div class="text-danger"
                 *ngIf="userForm.controls['company_name'].invalid && (isFormSubmitted || userForm.controls['company_name'].touched || userForm.controls['company_name'].dirty)">
@@ -21,8 +27,27 @@
                 <span *ngIf="userForm.controls['company_name'].errors?.['minlength']">No tiene la longitud correcta </span>
             </div>
         </div>
-     
         <div class="col-md-4"></div>
+             }
+
+        @if (data.AddUserToCompant||data.AddUserToProvider) {
+            <div class="col-md-8">
+            <mat-form-field>
+                <mat-select placeholder="Seleccione una compania
+                " formControlName="company_name" required>
+                  <mat-option>--</mat-option>
+                  <mat-option *ngFor="let comp of company" [value]="comp">
+                    {{comp.company_name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="userForm.controls['company_name'].errors?.['required']">Por favor seleccione una compania</mat-error>
+               
+              </mat-form-field>
+            </div>
+        }
+     
+
+       
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <label class="form-label">Telefono</label>

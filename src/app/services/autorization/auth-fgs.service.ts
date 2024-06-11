@@ -9,6 +9,7 @@ import { IUser } from '../../interfaces/IUser';
 export class AuthFGSService {
   //podemos pasar query params a las url
   urluser="http://localhost:3000/users?email"
+  urluserbussiness="http://localhost:3000/userbussiness"
   constructor(private http:HttpClient) { }
  GetUserById(email:string):Observable<IUser[]>{
   const miurl= `${this.urluser}=${email}`;

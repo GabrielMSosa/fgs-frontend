@@ -10,6 +10,8 @@ import { IUser } from '../../interfaces/IUser';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from './modal/modal.component';
 import { IUserBussiness } from '../../interfaces/IUserBussiness';
+import { RegiserService } from '../../services/autorization/regiser.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const PrimaryWhite = '#ffffff';
 const SecondaryGrey = '#ccc';
@@ -136,11 +138,28 @@ public SendDatas:IUserBussiness={
 
   alerts: Alert[] = [];
 
-  constructor(private authGoogleService: AuthGoogleService, private authorifgs: AuthFGSService, public dialog: MatDialog) {
-   
+  constructor(private authGoogleService: AuthGoogleService, 
+    private authorifgs: AuthFGSService, private serviregister: RegiserService,
+    public dialog: MatDialog,private snackBar: MatSnackBar) {
+  
     this.reset();
   }
+   OpenSnackError(error:any){
+    
+    this.snackBar.open(error, "Try!", {
+      duration: 3000,
+      panelClass: ['red-snackbar', 'login-snackbar'],
+    });
+  }
 
+
+  openSuccess(error:any){
+    
+    this.snackBar.open(error, "Success!", {
+      duration: 3000,
+      panelClass: ['green-snackbar', 'login-snackbar'],
+    });
+  }
 
   ngOnInit() {
    
@@ -177,6 +196,21 @@ public SendDatas:IUserBussiness={
 
   //Bloque de codigo del modal
   openDialog(datax: string): void {
+  this.dataselect  = {
+      NewCompany: false,
+      NewProvider: false,
+      AddUserToCompant: false,
+      AddUserToProvider: false,
+    }
+     this.selectinfo={
+      companyName:"",
+      phone:"",
+      city:"",
+      zipcode:"",
+      isCompany:false,
+      IsProvider:false,
+      IsNew:false,
+    }
     this.SendDatas={
       email_user: "",
       name_user: "",
@@ -191,14 +225,26 @@ public SendDatas:IUserBussiness={
     }
     if (datax == 'Newcompany') {
 this.dataselect.NewCompany=true;
+this.dataselect.AddUserToCompant=false;
+this.dataselect.NewProvider=false;
+this.dataselect.AddUserToProvider=false;
     }
     if (datax == 'Newprovider') {
+      this.dataselect.NewCompany=false;
+      this.dataselect.AddUserToCompant=false;
       this.dataselect.NewProvider=true;
+      this.dataselect.AddUserToProvider=false;
     }
     if (datax == 'addCompany') {
+      this.dataselect.NewCompany=false;
       this.dataselect.AddUserToCompant=true;
+      this.dataselect.NewProvider=false;
+      this.dataselect.AddUserToProvider=false;
     }
     if (datax == 'addProvider') {
+      this.dataselect.NewCompany=false;
+      this.dataselect.AddUserToCompant=false;
+      this.dataselect.NewProvider=false;
       this.dataselect.AddUserToProvider=true;
     }
 
@@ -217,12 +263,7 @@ this.dataselect.NewCompany=true;
       console.log(JSON.stringify(this.selectinfo))
     });
     //debemos limpiar las variables porque quedan guardadas con el valor actual...
-    this.dataselect   = {
-      NewCompany: false,
-      NewProvider: false,
-      AddUserToCompant: false,
-      AddUserToProvider: false,
-    }
+  
   }
 
 
@@ -237,7 +278,16 @@ this.dataselect.NewCompany=true;
     this.SendDatas.phone=this.selectinfo.phone;
     this.SendDatas.zipcode_user=this.selectinfo.zipcode;
     this.SendDatas.name_user=this.authGoogleService.getProfile()["given_name"]+" "+this.authGoogleService.getProfile()["family_name"];
- console.log(JSON.stringify(this.SendDatas))
+
+    this.serviregister.CreateUserbussiness(this.SendDatas).subscribe({
+      next: (v) => console.log(v),
+      error: (e) => this.OpenSnackError(""),
+      complete: () =>  this.openSuccess("")
+    }
+    )
+
+
+    console.log(JSON.stringify(this.SendDatas))
  
   }
 }
