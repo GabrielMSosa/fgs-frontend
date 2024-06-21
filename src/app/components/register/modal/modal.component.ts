@@ -96,13 +96,13 @@ export class ModalComponent implements OnInit {
     console.log(this.userForm.value.city);
     console.log(this.userForm.value.zipcode);
     if (this.data.AddUserToCompant || this.data.AddUserToProvider) {
-      console.log(this.userForm.value.company_name.company_name);
+      console.log("EL VALOR DE COMPANY NAME ES "+this.userForm.value.company_name.company_name);
       this.datasend.companyName = this.userForm.value.company_name.company_name;
       this.datasend.IsNew = false;
     }
 
     if (this.data.NewProvider || this.data.NewCompany) {
-      console.log(this.userForm.value.company_name);
+      console.log("EL VALOR DE COMPANY NAME2 ES "+this.userForm.value.company_name);
       this.datasend.companyName = this.userForm.value.company_name;
       this.datasend.IsNew = this.data.NewCompany||this.data.NewProvider;
     }
@@ -110,8 +110,7 @@ export class ModalComponent implements OnInit {
     this.datasend.isCompany = this.data.NewCompany || this.data.AddUserToCompant;
     console.log("el valor del selecto en submit2 vale"+JSON.stringify(this.data))
   
-    this.datasend.companyName = this.userForm.value.company_name;
-    this.datasend.city = this.userForm.value.city;
+       this.datasend.city = this.userForm.value.city;
     this.datasend.zipcode = this.userForm.value.zipcode;
     this.datasend.phone = this.userForm.value.telephone;
     console.log("el valor de json es "+JSON.stringify(this.datasend))

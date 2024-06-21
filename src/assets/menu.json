@@ -1,0 +1,99 @@
+[{
+    "text": "Dashboard",
+    "icon": "dashboard",
+    "routerLink": "/"
+},
+{
+    "text": "Comprar Té",
+    "icon": "people",
+    "routerLink": "/secadero"
+},
+{
+    "text": "Vender Te",
+    "icon": "supervised_user_circle",
+    "routerLink": "/sellte"
+},
+{
+    "text": "Suit",
+    "icon": "inventory_2",
+    "children": [{
+            "text": "Category",
+            "icon": "category",
+            "routerLink": "/product/category"
+        },
+        {
+            "text": "Sub Category",
+            "icon": "layers",
+            "routerLink": "/product/sub-category"
+        },
+        {
+            "text": "Product",
+            "icon": "all_inbox",
+            "routerLink": "/product/manage"
+        }
+    ]
+},
+{
+    "text": "Expense",
+    "icon": "inventory_2",
+    "children": [{
+            "text": "Category",
+            "icon": "category",
+            "routerLink": "/product/category"
+        },
+        {
+            "text": "Manage Expense",
+            "icon": "layers",
+            "routerLink": "/product/sub-category"
+        },
+        {
+            "text": "Statement",
+            "icon": "all_inbox",
+            "routerLink": "/product/manage"
+        }
+    ]
+},
+{
+    "text": "Mis pedidos",
+    "icon": "receipt",
+    "children": [{
+            "text": "Estados",
+            "icon": "local_atm",
+            "routerLink": "/purchases/new"
+        },
+        {
+            "text": "Reporte de pedidos",
+            "icon": "history",
+            "routerLink": "/report"
+        }
+    ]
+},
+{
+    "text": "Sales",
+    "icon": "calculate",
+    "children": [{
+            "text": "New Sales",
+            "icon": "point_of_sale",
+            "routerLink": "/sales/add"
+        },
+        {
+            "text": "Sales History",
+            "icon": "history",
+            "routerLink": "/sales/history"
+        }
+    ]
+},
+{
+    "text": "Report",
+    "icon": "analytics",
+    "routerLink": "/reports"
+}
+]
+
+
+
+
+
+
+
+

@@ -12,6 +12,7 @@ import { ModalComponent } from './modal/modal.component';
 import { IUserBussiness } from '../../interfaces/IUserBussiness';
 import { RegiserService } from '../../services/autorization/regiser.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 const PrimaryWhite = '#ffffff';
 const SecondaryGrey = '#ccc';
@@ -140,7 +141,7 @@ public SendDatas:IUserBussiness={
 
   constructor(private authGoogleService: AuthGoogleService, 
     private authorifgs: AuthFGSService, private serviregister: RegiserService,
-    public dialog: MatDialog,private snackBar: MatSnackBar) {
+    public dialog: MatDialog,private snackBar: MatSnackBar,private router: Router) {
   
     this.reset();
   }
@@ -148,7 +149,7 @@ public SendDatas:IUserBussiness={
     
     this.snackBar.open(error, "Try!", {
       duration: 3000,
-      panelClass: ['red-snackbar', 'login-snackbar'],
+      panelClass:"error",
     });
   }
 
@@ -157,7 +158,7 @@ public SendDatas:IUserBussiness={
     
     this.snackBar.open(error, "Success!", {
       duration: 3000,
-      panelClass: ['green-snackbar', 'login-snackbar'],
+      panelClass:"successful",
     });
   }
 
@@ -254,13 +255,13 @@ this.dataselect.AddUserToProvider=false;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("el valorde resul vale "+result);
+      console.log("el valorde resul vale "+JSON.stringify(result))  ;
       if (result!=undefined){
         this.selectinfo=result
       }
       
       this.returnDialog=true
-      console.log(JSON.stringify(this.selectinfo))
+      console.log("el valr de info es "+JSON.stringify(this.selectinfo))
     });
     //debemos limpiar las variables porque quedan guardadas con el valor actual...
   
@@ -282,7 +283,9 @@ this.dataselect.AddUserToProvider=false;
     this.serviregister.CreateUserbussiness(this.SendDatas).subscribe({
       next: (v) => console.log(v),
       error: (e) => this.OpenSnackError(""),
-      complete: () =>  this.openSuccess("")
+      complete: () =>  {this.openSuccess("");
+        this.router.navigate(['/home'])
+      }
     }
     )
 

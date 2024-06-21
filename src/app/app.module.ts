@@ -27,12 +27,17 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatListModule} from '@angular/material/list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
+import { HomerootComponent } from './components/home/homeroot/homeroot.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { HomepreviewComponent } from './components/home/homepreview/homepreview.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ModalComponent
+    ModalComponent,
+    HomerootComponent,
+    HomepreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,8 @@ import {MatSelectModule} from '@angular/material/select';
      MatTooltipModule,
      MatListModule,
      MatSnackBarModule,
-     MatSelectModule
+     MatSelectModule,
+     MatSidenavModule
   ],
   providers: [
     provideAnimationsAsync()
