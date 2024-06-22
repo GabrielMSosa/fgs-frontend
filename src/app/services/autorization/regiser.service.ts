@@ -22,5 +22,9 @@ export class RegiserService {
     const url= `${this.urluserbussiness}?isCompany=true&isNew=true`
     return this.http.get<IUserBussiness[]>(url)
    }
-
+   GetBussinessByEmail(email: string): Observable<IUserBussiness[]> {
+    const miurl = `${this.urluserbussiness}?email_user=${email}`;
+    console.log(miurl)
+    return this.http.get<IUserBussiness[]>(miurl);
+  }
 }

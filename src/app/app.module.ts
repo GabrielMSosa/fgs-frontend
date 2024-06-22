@@ -30,6 +30,9 @@ import {MatSelectModule} from '@angular/material/select';
 import { HomerootComponent } from './components/home/homeroot/homeroot.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HomepreviewComponent } from './components/home/homepreview/homepreview.component';
+import { ForbidenComponent } from './components/errorpages/forbiden/forbiden.component';
+import { HomeasociateComponent } from './components/asociate/homeasociate/homeasociate.component';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +40,9 @@ import { HomepreviewComponent } from './components/home/homepreview/homepreview.
     RegisterComponent,
     ModalComponent,
     HomerootComponent,
-    HomepreviewComponent
+    HomepreviewComponent,
+    ForbidenComponent,
+    HomeasociateComponent
   ],
   imports: [
     BrowserModule,

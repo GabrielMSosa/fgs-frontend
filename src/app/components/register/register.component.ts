@@ -13,6 +13,7 @@ import { IUserBussiness } from '../../interfaces/IUserBussiness';
 import { RegiserService } from '../../services/autorization/regiser.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+ 
 
 const PrimaryWhite = '#ffffff';
 const SecondaryGrey = '#ccc';
@@ -94,12 +95,14 @@ export class RegisterComponent implements OnInit {
   emptyLoadingTemplate!: TemplateRef<any>;
   showingTemplate = false;
   public ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
-  public loading = true;
+  public loading = true;//en true corre el spinner
   public primaryColour = PrimaryWhite;
   public secondaryColour = SecondaryGrey;
   public coloursEnabled = true;
   public loadingTemplate!: TemplateRef<any>;
   public returnDialog:boolean=false;
+  public userbusines:IUserBussiness[]=[];
+  public roles:string[]=[];
   public dataselect: SelectModal = {
     NewCompany: false,
     NewProvider: false,
@@ -163,8 +166,12 @@ public SendDatas:IUserBussiness={
   }
 
   ngOnInit() {
-   
-    this.authorifgs.GetUserById("sosagabriel79@gmail.com").subscribe({
+ 
+    const data = this.authGoogleService.getProfile();
+  console.log(JSON.stringify(data))
+    sessionStorage.setItem("name",data["given_name"]+" "+data["family_name"]);
+    sessionStorage.setItem("picture",data["picture"]); 
+    this.authorifgs.GetUserById(data["email"]).subscribe({
       next: data => {
         console.log('JSON Data:', JSON.stringify(data))
       },
@@ -173,6 +180,31 @@ public SendDatas:IUserBussiness={
       }
     }
     );
+
+    this.serviregister.GetBussinessByEmail(data["email"]).subscribe({
+      next: (v) => this.userbusines=v,
+      error: (e) => this.OpenSnackError(""),
+      complete: () =>  { 
+       console.log("POR EMAIL"+JSON.stringify(this.userbusines) ) ;
+        
+        if(this.userbusines.length==0){
+        this.loading=false;
+      }else{
+        if(this.userbusines[0].isValidateForOwner==false){
+          this.router.navigate(['/forbidden'])
+        }else{
+          this.roles[0]="VALIDATE_OWNER";
+          if(this.userbusines[0].isNew=true){
+            this.roles[1]="PRINCIPAL_OWNER";
+          }
+          //PARA MEJORAR MANDAR UNJSON.
+          sessionStorage.setItem("ROL",this.roles.toString())
+          console.log(this.userbusines.length);
+          this.router.navigate(['/home'])
+        }
+      }
+      }
+    });
   }
 
 
@@ -185,8 +217,9 @@ public SendDatas:IUserBussiness={
   }
   showData() {
     console.log(this.authGoogleService.getProfile() )
-    const data = JSON.stringify(this.authGoogleService.getProfile())
-    console.log(data);
+    const data = this.authGoogleService.getProfile();
+    sessionStorage.setItem("name",data["name"]);
+ console.log(data["name"]);
   }
 
   getToken() {

@@ -1,0 +1,19 @@
+ .customIconSize {
+     transform: scale(2.4) !important;
+   
+     background-color: whitesmoke;
+     color: green;
+ }
+.icon-rotate-right{
+    transform: scaleX(1)!important;
+}
+.icon-rotate-left{
+    transform: scaleX(-1)!important;
+}
+ .fnt-icon {
+
+     font-size: 8px;
+     font-family: "Bebas Neue", sans-serif;
+     font-weight: 600;
+     font-style: normal;
+ }
