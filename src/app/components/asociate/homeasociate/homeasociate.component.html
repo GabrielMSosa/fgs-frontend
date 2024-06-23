@@ -1,1 +1,94 @@
-<p>homeasociate works!</p>
+<div class="row g-3">
+    <div class="col-md-12"> </div>
+    <div class="col-md-4"> </div>
+    <div class="col-md-8">
+        <h1 class="fnt-icon">Asociación de colaboradores</h1>
+    </div>
+    <div class="col-md-12"> </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-12"> </div>
+    <div class="col-md-4"> </div>
+    <div class="col-md-4">
+        <h3 class="fnt-icon-sub">Seleccioné un colaborador</h3>
+    </div>
+    <div class="col-md-4"> </div>
+    <div class="col-md-4"> </div>
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>Colaboradores</mat-label>
+            <mat-select [(ngModel)]="selectedx" name="user">
+                @for (user of users; track user) {
+                <mat-option [value]="user">{{user.name_user}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+    <div class="col-md-4"> </div>
+    <div class="col-md-12">
+        <mat-divider></mat-divider>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <h3 *ngIf="selectedx" class="fnt-icon-sub">Colaborador Seleccionado:</h3>
+
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+        <p class="fnt-icon-sub">Nombre </p>
+        <p class="fnt-icon-sub res"> {{selectedx.name_user}}</p>
+    </div>
+    <div class="col-md-3">
+        <p class="fnt-icon-sub">Email </p>
+        <p class="fnt-icon-sub res"> {{selectedx.email_user}}</p>
+    </div>
+    <div class="col-md-3">
+        <p class="fnt-icon-sub">Tel</p>
+        <p class="fnt-icon-sub res"> {{selectedx.phone}}</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-12"> 
+        <mat-divider></mat-divider>
+    </div>
+    <div class="col-md-4"> </div>
+    <div class="col-md-4">
+        <h3 *ngIf="selectedx" class="fnt-icon-sub">Seleccioné un rol para su colaborador</h3>
+
+    </div>
+    <div class="col-md-4"> </div>
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+        <form>
+            <mat-form-field class="example-chip-list">
+                <mat-label>Roles del colaborador</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Seleccioné un rol">
+                    @for (fruit of rol(); track $index) {
+                    <mat-chip-row (removed)="remove(fruit)">
+                        {{fruit}}
+                        <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                    }
+                </mat-chip-grid>
+                <input name="currentRol" placeholder="Nuevo rol..." #fruitInput [(ngModel)]="currentRol"
+                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    @for (fruit of filteredFruits(); track fruit) {
+                    <mat-option [value]="fruit">{{fruit}}</mat-option>
+                    }
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+    </div>
+    <div class="col-md-2"> </div>
+    <div class="col-md-4"> 
+        <p> {{ rol() }} </p>
+    </div>
+    <div class="col-md-4"> </div>
+</div>

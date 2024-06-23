@@ -1,0 +1,24 @@
+.fnt-icon {
+
+    font-size: 38px;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 150;
+    font-style: normal;
+}
+
+.fnt-icon-sub {
+
+    font-size: 18px;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 150;
+    font-style: normal;
+}
+.res{
+    color: green;
+    font-size: 22px;
+}
+
+.example-chip-list {
+    width: 100%;
+  }
+  

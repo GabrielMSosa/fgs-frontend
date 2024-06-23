@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -32,7 +32,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { HomepreviewComponent } from './components/home/homepreview/homepreview.component';
 import { ForbidenComponent } from './components/errorpages/forbiden/forbiden.component';
 import { HomeasociateComponent } from './components/asociate/homeasociate/homeasociate.component';
- 
+import {MatTableModule} from '@angular/material/table';
+import { HomereportComponent } from './components/reports/homereport/homereport.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +46,8 @@ import { HomeasociateComponent } from './components/asociate/homeasociate/homeas
     HomerootComponent,
     HomepreviewComponent,
     ForbidenComponent,
-    HomeasociateComponent
+    HomeasociateComponent,
+    HomereportComponent
   ],
   imports: [
     BrowserModule,
@@ -67,8 +72,12 @@ import { HomeasociateComponent } from './components/asociate/homeasociate/homeas
      MatListModule,
      MatSnackBarModule,
      MatSelectModule,
-     MatSidenavModule
+     MatSidenavModule,
+     MatTableModule,
+     MatAutocompleteModule,
+     MatChipsModule
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     provideAnimationsAsync()
   ],

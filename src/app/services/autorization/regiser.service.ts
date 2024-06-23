@@ -27,4 +27,10 @@ export class RegiserService {
     console.log(miurl)
     return this.http.get<IUserBussiness[]>(miurl);
   }
+  GetBussinessByCompany(company: string): Observable<IUserBussiness[]> {
+    const miurl = `${this.urluserbussiness}?isNew=false&company_name=${company}`;
+    console.log(miurl)
+    return this.http.get<IUserBussiness[]>(miurl);
+  }
+  
 }
