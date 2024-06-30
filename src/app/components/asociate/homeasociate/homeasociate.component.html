@@ -17,7 +17,7 @@
     <div class="col-md-4">
         <mat-form-field>
             <mat-label>Colaboradores</mat-label>
-            <mat-select [(ngModel)]="selectedx" name="user">
+            <mat-select [(ngModel)]="selectedx" name="user" (selectionChange)="ChangeEvent()">
                 @for (user of users; track user) {
                 <mat-option [value]="user">{{user.name_user}}</mat-option>
                 }
@@ -47,6 +47,22 @@
     <div class="col-md-3">
         <p class="fnt-icon-sub">Tel</p>
         <p class="fnt-icon-sub res"> {{selectedx.phone}}</p>
+    </div>
+    <div class="col-md-5"></div>
+    
+    <div class="col-md-3">
+        <p class="fnt-icon-sub">Status</p>
+     @if (flag) {
+
+        @if (!selectedx.isValidateForOwner) {
+            <p class="fnt-icon-sub desvinc"> {{selectedx.isValidateForOwner==false?'Desvinculado':''}}</p>
+        }
+        @if (selectedx.isValidateForOwner) {
+
+            <p class="fnt-icon-sub vinc"> {{selectedx.isValidateForOwner==true?'Vinculado':''}}</p>
+           
+        }
+       }
     </div>
 </div>
 

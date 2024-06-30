@@ -1,6 +1,6 @@
  
 import { FormControl } from '@angular/forms';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, startWith, timer } from 'rxjs';
 import { RegiserService } from '../../../services/autorization/regiser.service';
 import { IUserBussiness } from '../../../interfaces/IUserBussiness';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -13,7 +13,7 @@ import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mate
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
-import { ROL } from '../../../interfaces/IRoles';
+import { IRoles, ROL } from '../../../interfaces/IRoles';
 import { RoluserService } from '../../../services/autorization/roluser.service';
 @Component({
   selector: 'app-homeasociate',
@@ -38,6 +38,7 @@ export class HomeasociateComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentRol = model('');
   readonly rol = signal([ROL.COLABORATOR.toString()]);
+  roles:IRoles[]=[];
   readonly allFruits: string[] = [ 
     ROL.COLABORATOR.toString(),
     ROL.OPERATOR_READER.toString(),
@@ -85,21 +86,42 @@ export class HomeasociateComponent implements OnInit {
     event.option.deselect();
   }
 
+  flag:boolean=false;
+  ChangeEvent(){
+    this.flag=!this.flag;
+  }
+
   constructor(private serviregiste: RegiserService,private servirol:RoluserService) { }
 
+
+
   ngOnInit() {
+    let usrbs=sessionStorage.getItem('userbussiness');
+    let usrjson=JSON.parse(usrbs||"");
     const rol='ROL_MASTER'
     const rols=[];
     rols.push(rol);
-    this.servirol.PatchRolByID("1ag",rols).subscribe({
-      next: (v) => console.log(v),
-      error: (e) => console.log(e),
-      complete: () => console.log("finshi")
-    });
-    this.serviregiste.GetBussinessByCompany("Company S.A").subscribe({
+    //this.servirol.PatchRolByID("1ag",rols).subscribe({
+    //  next: (v) => console.log(v),
+    //  error: (e) => console.log(e),
+    //  complete: () => console.log("finshi")
+    //});
+    this.serviregiste.GetBussinessByCompany(usrjson.company_name).subscribe({
       next: (v) => this.users = v,
       error: (e) => console.log(e),
       complete: () => console.log(JSON.stringify(this.users))
+    });
+    timer(1000).subscribe(x => {
+      console.log(JSON.stringify(this.users));
+      this.users.forEach(item=>{
+        timer(100).subscribe(x=>{
+          this.servirol.SearchRolByID((item.id||0).toString()).subscribe({
+            next: (v) => {this.roles.push(v[0])}, 
+            error: (e) => console.log(e),
+            complete: () => console.log(JSON.stringify(this.roles))
+          });
+        })
+      });
     });
 
 

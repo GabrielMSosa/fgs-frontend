@@ -22,3 +22,11 @@
     width: 100%;
   }
   
+  .vinc{
+    color: green;
+    font-size: 22px;
+  }
+  .desvinc{
+    color: red;
+    font-size: 22px;
+  }
