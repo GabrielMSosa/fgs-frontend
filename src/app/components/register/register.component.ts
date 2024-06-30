@@ -12,8 +12,10 @@ import { ModalComponent } from './modal/modal.component';
 import { IUserBussiness } from '../../interfaces/IUserBussiness';
 import { RegiserService } from '../../services/autorization/regiser.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
- 
+import { ActivatedRoute, Router } from '@angular/router';
+import { RoluserService } from '../../services/autorization/roluser.service';
+import { IRoles, ROL } from '../../interfaces/IRoles';
+import { elementAt, timer } from 'rxjs';
 
 const PrimaryWhite = '#ffffff';
 const SecondaryGrey = '#ccc';
@@ -109,6 +111,13 @@ export class RegisterComponent implements OnInit {
     AddUserToCompant: false,
     AddUserToProvider: false,
   }
+
+  rol:IRoles=  {
+    id:"",
+    isNew:false, 
+    roles: [],
+   } 
+rolsearch:IRoles[]= [];
 public selectinfo:DataForm={
   companyName:"",
   phone:"",
@@ -144,7 +153,7 @@ public SendDatas:IUserBussiness={
 
   constructor(private authGoogleService: AuthGoogleService, 
     private authorifgs: AuthFGSService, private serviregister: RegiserService,
-    public dialog: MatDialog,private snackBar: MatSnackBar,private router: Router) {
+    public dialog: MatDialog,private snackBar: MatSnackBar,private router: Router,private servirol:RoluserService,private activatedRoute: ActivatedRoute) {
   
     this.reset();
   }
@@ -165,46 +174,63 @@ public SendDatas:IUserBussiness={
     });
   }
 
+  id:string="";
   ngOnInit() {
- 
-    const data = this.authGoogleService.getProfile();
-  console.log(JSON.stringify(data))
-    sessionStorage.setItem("name",data["given_name"]+" "+data["family_name"]);
-    sessionStorage.setItem("picture",data["picture"]); 
-    this.authorifgs.GetUserById(data["email"]).subscribe({
-      next: data => {
-        console.log('JSON Data:', JSON.stringify(data))
+   
+ const data = this.authGoogleService.getProfile();
+ console.log(JSON.stringify(data));
+ sessionStorage.setItem("name",data["given_name"]+" "+data["family_name"]);
+ sessionStorage.setItem("picture",data["picture"]); 
+console.log(data["email"])
+this.serviregister.GetBussinessByEmail(data["email"]).subscribe({
+  next: (v) => { 
+    this.userbusines=v;
+  },
+  error: (e) => console.log(e),
+  complete: () =>  {
+   
+   
+    console.log("info"+this.userbusines)
+    this.servirol.SearchRolByID((this.userbusines[0].id||0).toString()).subscribe({
+      next: (v) => { 
+        this.rolsearch=v;
       },
-      error: error => {
-        console.error('Error fetching JSON data:', error)
-      }
-    }
-    );
+      error: (e) => console.log(e),
+      complete: () =>  {
+        console.log(JSON.stringify(this.rolsearch));
+   
+       }}); 
 
-    this.serviregister.GetBussinessByEmail(data["email"]).subscribe({
-      next: (v) => this.userbusines=v,
-      error: (e) => this.OpenSnackError(""),
-      complete: () =>  { 
-       console.log("POR EMAIL"+JSON.stringify(this.userbusines) ) ;
-        
-        if(this.userbusines.length==0){
-        this.loading=false;
+
+   }});  
+   timer(3000).subscribe(x => {
+    let roles= this.rolsearch[0].roles
+    console.log("rOLES VALEN"+roles)
+    console.log(roles.includes(ROL.COLABORATOR))
+      if( roles.includes(ROL.COLABORATOR)){
+        sessionStorage.setItem("ROL",JSON.stringify(this.rolsearch[0] ))
+        this.router.navigate(['/home'])
       }else{
-        if(this.userbusines[0].isValidateForOwner==false){
-          this.router.navigate(['/forbidden'])
-        }else{
-          this.roles[0]="VALIDATE_OWNER";
-          if(this.userbusines[0].isNew=true){
-            this.roles[1]="PRINCIPAL_OWNER";
-          }
-          //PARA MEJORAR MANDAR UNJSON.
-          sessionStorage.setItem("ROL",this.roles.toString())
-          console.log(this.userbusines.length);
-          this.router.navigate(['/home'])
-        }
+        this.router.navigate(['/forbidden'])
       }
-      }
-    });
+
+ 
+    
+    
+    
+     });
+ 
+
+        
+ 
+       
+     
+      
+          
+
+
+
+
   }
 
 
@@ -300,6 +326,19 @@ this.dataselect.AddUserToProvider=false;
   
   }
 
+  response:IUserBussiness={
+    email_user: "",
+    name_user: "",
+    company_name: "",
+    zipcode_user:"",
+    isProvider:false,
+    isCompany:false,
+    isNew:false,
+    phone:"",
+    city_user:"",
+    isValidateForOwner:false,
+  };
+
 
   SaveChanges(){
    this.SendDatas.email_user=this.authGoogleService.getProfile()["email"];
@@ -312,12 +351,30 @@ this.dataselect.AddUserToProvider=false;
     this.SendDatas.phone=this.selectinfo.phone;
     this.SendDatas.zipcode_user=this.selectinfo.zipcode;
     this.SendDatas.name_user=this.authGoogleService.getProfile()["given_name"]+" "+this.authGoogleService.getProfile()["family_name"];
-
+    
     this.serviregister.CreateUserbussiness(this.SendDatas).subscribe({
-      next: (v) => console.log(v),
+      next: (v) =>this.response=v,
       error: (e) => this.OpenSnackError(""),
-      complete: () =>  {this.openSuccess("");
-        this.router.navigate(['/home'])
+      complete: () =>  {
+        const id=this.response.id||0;
+        this.rol.id=id.toString();
+        this.rol.isNew=this.response.isNew;
+        if(this.response.isNew){
+          this.rol.roles=[ROL.COLABORATOR,ROL.MANAGER,ROL.OPERATOR_READER,ROL.OPERATOR_WRITTER,
+            ROL.SUPERVISOR_READER,ROL.SUPERVISOR_WRITTER
+          ];
+        }else{
+          this.rol.roles=[];
+        }
+        this.servirol.CreateRol(this.rol).subscribe({
+          next: (v) =>console.log(v),
+          error: (e) => this.OpenSnackError(e),
+          complete: () =>  {
+            sessionStorage.setItem('rol',JSON.stringify(this.rol));
+            this.openSuccess("");
+            this.router.navigate(['/home'])
+
+          }});
       }
     }
     )

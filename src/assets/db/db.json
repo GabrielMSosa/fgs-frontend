@@ -21,10 +21,36 @@
   ],
   "userbussiness": [
     {
-      "id": "763c",
+      "id": "1",
+      "email_user": "dummy@dummy.com",
+      "name_user": "Jhon Doe",
+      "company_name": "Company Jhon Doe",
+      "zipcode_user": "1231",
+      "isProvider": false,
+      "isCompany": true,
+      "isNew": true,
+      "phone": "1234567891011",
+      "city_user": "Obera",
+      "isValidateForOwner": true
+    },
+    {
+      "id": "2",
+      "email_user": "dummy2@dummy2.com",
+      "name_user": "Jhon Doe",
+      "company_name": "Provider Jhon Doe",
+      "zipcode_user": "1231",
+      "isProvider": true,
+      "isCompany": false,
+      "isNew": true,
+      "phone": "1234567891011",
+      "city_user": "Obera",
+      "isValidateForOwner": true
+    },
+    {
+      "id": "bf4d",
       "email_user": "sosagabriel79@gmail.com",
       "name_user": "gabriel sosa",
-      "company_name": "Company S.A",
+      "company_name": "FGSCOMPANY S.A.",
       "zipcode_user": "3361",
       "isProvider": false,
       "isCompany": true,
@@ -34,10 +60,10 @@
       "isValidateForOwner": true
     },
     {
-      "id": "9a5f",
+      "id": "6646",
       "email_user": "carlalucerodenis@gmail.com",
       "name_user": "carla denis",
-      "company_name": "Company S.A",
+      "company_name": "FGSCOMPANY S.A.",
       "zipcode_user": "3361",
       "isProvider": false,
       "isCompany": true,
@@ -45,6 +71,32 @@
       "phone": "0375515273161",
       "city_user": "Obera",
       "isValidateForOwner": false
+    }
+  ],
+  "roles": [
+    {
+      "id": "1ag",
+      "isNew": true,
+      "roles": [
+        "ROL_MASTER"
+      ]
+    },
+    {
+      "id": "bf4d",
+      "isNew": true,
+      "roles": [
+        "COLABORATOR",
+        "MANAGER",
+        "OPERATOR_READER",
+        "OPERATOR_WRITTER",
+        "SUPERVISOR_READER",
+        "SUPERVISOR_WRITTER"
+      ]
+    },
+    {
+      "id": "6646",
+      "isNew": false,
+      "roles": []
     }
   ]
 }

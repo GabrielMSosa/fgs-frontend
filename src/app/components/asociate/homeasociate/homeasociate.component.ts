@@ -13,6 +13,8 @@ import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mate
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import { ROL } from '../../../interfaces/IRoles';
+import { RoluserService } from '../../../services/autorization/roluser.service';
 @Component({
   selector: 'app-homeasociate',
   templateUrl: './homeasociate.component.html',
@@ -35,8 +37,14 @@ export class HomeasociateComponent implements OnInit {
   //variables para el chips
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentRol = model('');
-  readonly rol = signal(['Colaborador']);
-  readonly allFruits: string[] = ['Supervisor', 'Operario Lectura', 'Director', 'Operario Escritura', 'Colaborador'];
+  readonly rol = signal([ROL.COLABORATOR.toString()]);
+  readonly allFruits: string[] = [ 
+    ROL.COLABORATOR.toString(),
+    ROL.OPERATOR_READER.toString(),
+    ROL.OPERATOR_WRITTER.toString(),
+    ROL.SUPERVISOR_WRITTER.toString(),
+    ROL.SUPERVISOR_READER.toString(),
+    ROL.MANAGER.toString()]; 
   readonly filteredFruits = computed(() => {
     const currentRol = this.currentRol().toLowerCase();
     return currentRol
@@ -77,9 +85,17 @@ export class HomeasociateComponent implements OnInit {
     event.option.deselect();
   }
 
-  constructor(private serviregiste: RegiserService) { }
+  constructor(private serviregiste: RegiserService,private servirol:RoluserService) { }
 
   ngOnInit() {
+    const rol='ROL_MASTER'
+    const rols=[];
+    rols.push(rol);
+    this.servirol.PatchRolByID("1ag",rols).subscribe({
+      next: (v) => console.log(v),
+      error: (e) => console.log(e),
+      complete: () => console.log("finshi")
+    });
     this.serviregiste.GetBussinessByCompany("Company S.A").subscribe({
       next: (v) => this.users = v,
       error: (e) => console.log(e),

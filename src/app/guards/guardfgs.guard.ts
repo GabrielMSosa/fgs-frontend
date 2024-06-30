@@ -5,8 +5,9 @@ import { CanActivateFn, Router } from '@angular/router';
 export const guardfgsGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   let flag=false;
-  let rol=sessionStorage.getItem("ROL");
-  let rol_array=rol?.split(",");
+  let rol=sessionStorage.getItem("ROL")||"";
+  let roljson=JSON.parse(rol);
+  let rol_array=roljson.roles;
   const allowedRoles:string[] = route.data?.['allowedRoles'];
   console.log("el valor de data vale"+allowedRoles);
   console.log("el valor rol vale"+rol);

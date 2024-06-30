@@ -52,11 +52,11 @@
 
 <div class="row g-4">
     <div class="col-md-12"> 
-        <mat-divider></mat-divider>
+        <mat-divider></mat-divider> 
     </div>
     <div class="col-md-4"> </div>
     <div class="col-md-4">
-        <h3 *ngIf="selectedx" class="fnt-icon-sub">Seleccioné un rol para su colaborador</h3>
+        <h3  *ngIf="selectedx" class="fnt-icon-sub">Seleccioné un rol para su colaborador    <mat-icon matTooltip="Colaborador es el rol minimo que puede tener un colaborador si sacas el item de colaborador lo desvinculas de tu negocio." fontIcon="help"></mat-icon></h3>
 
     </div>
     <div class="col-md-4"> </div>
@@ -64,7 +64,7 @@
     <div class="col-md-8">
         <form>
             <mat-form-field class="example-chip-list">
-                <mat-label>Roles del colaborador</mat-label>
+                <mat-label  >Roles del colaborador</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Seleccioné un rol">
                     @for (fruit of rol(); track $index) {
                     <mat-chip-row (removed)="remove(fruit)">
