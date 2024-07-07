@@ -37,6 +37,7 @@ import { HomereportComponent } from './components/reports/homereport/homereport.
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
+import { DeclareproductComponent } from './components/declarehome/declareproduct/declareproduct.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { MatInputModule } from '@angular/material/input';
     HomepreviewComponent,
     ForbidenComponent,
     HomeasociateComponent,
-    HomereportComponent
+    HomereportComponent,
+    DeclareproductComponent
   ],
   imports: [
     BrowserModule,

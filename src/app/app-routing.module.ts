@@ -8,33 +8,50 @@ import { guardfgsGuard } from './guards/guardfgs.guard';
 import { ForbidenComponent } from './components/errorpages/forbiden/forbiden.component';
 import { HomeasociateComponent } from './components/asociate/homeasociate/homeasociate.component';
 import { ROL } from './interfaces/IRoles';
- 
+import { DeclareproductComponent } from './components/declarehome/declareproduct/declareproduct.component';
+
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'main', component: RegisterComponent },
-  { path: 'forbidden',component:ForbidenComponent   },
-  { path: 'home', component:HomerootComponent,title:"Home About"
+  { path: 'forbidden', component: ForbidenComponent },
+  {
+    path: 'home', component: HomerootComponent, title: "Home About"
     , canActivate: [guardfgsGuard],
     data: {
       allowedRoles: [ROL.COLABORATOR.toString()],
-    } ,children:[
-    { path: 'preview',component:HomepreviewComponent , canActivate: [guardfgsGuard],
-      data: {
-        allowedRoles: [ROL.COLABORATOR.toString()],
-      }   },
-      {path: 'asociate',component:HomeasociateComponent , canActivate: [guardfgsGuard],
+      allowType: ["COMPANY","PROVIDER"]
+    }
+    , children: [
+      {
+        path: 'preview', component: HomepreviewComponent, canActivate: [guardfgsGuard],
         data: {
-          allowedRoles: [ROL.COLABORATOR.toString(),ROL.MANAGER.toString()],
+          allowedRoles: [ROL.COLABORATOR.toString()],
+          allowType: ["COMPANY","PROVIDER"]
         }
+      },
+      {
+        path: 'asociate', component: HomeasociateComponent, canActivate: [guardfgsGuard],
+        data: {
+          allowedRoles: [ROL.COLABORATOR.toString(), ROL.MANAGER.toString()],
+          allowType: ["COMPANY"]
+        }
+      },
+      {
+        path: 'declare', component: DeclareproductComponent, canActivate: [guardfgsGuard],
+        data: {
+          allowedRoles: [ROL.COLABORATOR.toString(), ROL.MANAGER.toString()],
+          allowType: ["PROVIDER"]
+        }
+      },
 
-        
-      }
-    
-  ]}
-  
- 
+      
+
+    ]
+  }
+
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

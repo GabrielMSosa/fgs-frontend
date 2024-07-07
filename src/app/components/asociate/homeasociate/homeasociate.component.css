@@ -30,3 +30,12 @@
     color: red;
     font-size: 22px;
   }
+
+  .btn-1 {
+    background-color: rgb(24, 150, 62)!important;
+    border-radius: 0 px !important; 
+  }
+  .btn-2 {
+    background-color: rgb(33, 27, 164)!important;
+    border-radius: 0 px !important; 
+  }

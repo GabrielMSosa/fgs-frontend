@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IMenuLateral } from '../../../interfaces/IMenuLateral';
+import { AuthGoogleService } from '../../../services/googleauth/auth-google.service';
 
 @Component({
   selector: 'app-homeroot',
@@ -72,9 +73,14 @@ export class HomerootComponent {
   ]
 
 
-  constructor(private Routes: Router) { }
+  constructor(private Routes: Router,private authGoogleService: AuthGoogleService ) { }
+  
+  goToHome(){
+    this.authGoogleService. logout();
+    sessionStorage.clear();
+    this.Routes.navigate([''])
 
-
+  }
 
 
 

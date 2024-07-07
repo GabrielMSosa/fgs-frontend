@@ -52,8 +52,8 @@
       "name_user": "gabriel sosa",
       "company_name": "FGSCOMPANY S.A.",
       "zipcode_user": "3361",
-      "isProvider": false,
-      "isCompany": true,
+      "isProvider": true,
+      "isCompany": false,
       "isNew": true,
       "phone": "0375515273161",
       "city_user": "Obera",
@@ -96,7 +96,25 @@
     {
       "id": "6646",
       "isNew": false,
-      "roles": []
+      "roles": [
+        "SUPERVISOR_WRITTER",
+        "OPERATOR_WRITTER"
+      ]
+    }
+  ],
+  "product": [
+    {
+      "id": "2",
+      "user_id": "2",
+      "items": [
+        {
+          "id": "dummy",
+          "category": "dummy",
+          "item_name": "dummy",
+          "quantity": 0.0,
+          "unit": "dummy"
+        }
+      ]
     }
   ]
 }

@@ -33,4 +33,13 @@ export class RegiserService {
     return this.http.get<IUserBussiness[]>(miurl);
   }
   
+
+  PatchUserBussinessByID(id: string,owner:boolean):Observable<IUserBussiness>{
+    var body: any = {};
+    body.isValidateForOwner = owner;
+    const url= `${this.urluserbussiness}/${id}`;
+    return this.http.patch<IUserBussiness>(url,body) 
+   }
+
+
 }
