@@ -13,3 +13,74 @@
     font-style: normal;
   }
   
+  .example-radio-button{margin-left: 7px;}
+mat-grid-tile {
+  background:#fafafa;
+}
+.width-50{width: 49%;}
+.ml-1{margin-left: 1%;}
+.ml-2{margin-left: 2%;}
+.width-100{width: 100%;}
+.width-25{width: 25%;}
+mat-card {
+  width: 80%;
+  height:100% ;
+  /*max-width: 1440px;*/
+  
+  margin: 2em auto;
+  text-align: center;
+}
+
+
+mat-form-field {
+  display: block;
+  
+}
+.logggin{
+  font-size: 2rem;
+
+}
+.text2{
+  font-family: 'Cardo', serif;
+
+  font-family: 'PT Sans', sans-serif;
+  text-align: center;
+  font-size: 40px;
+}
+
+
+.title1{
+  font-family: 'Oswald', sans-serif;
+font-size: 1rem;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+.datpeso{ text-align: center;
+}
+
+.blockinfo{
+  padding-top: 10px;
+  padding-bottom: 30px;
+  background-color: rgb(30, 30, 72);
+}
+
+.icon{
+  margin-right: 5px;
+}
+
+.warning{
+  background-color: rgb(166, 25, 25);
+  color: rgb(255, 255, 255);
+
+}
+
+.btn-2 {
+  margin-top:10px;
+  margin-left:500px;
+  background-color: rgb(33, 27, 164)!important;
+  border-radius: 0 px !important; 
+}

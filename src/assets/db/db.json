@@ -47,19 +47,6 @@
       "isValidateForOwner": true
     },
     {
-      "id": "bf4d",
-      "email_user": "sosagabriel79@gmail.com",
-      "name_user": "gabriel sosa",
-      "company_name": "FGSCOMPANY S.A.",
-      "zipcode_user": "3361",
-      "isProvider": true,
-      "isCompany": false,
-      "isNew": true,
-      "phone": "0375515273161",
-      "city_user": "Obera",
-      "isValidateForOwner": true
-    },
-    {
       "id": "6646",
       "email_user": "carlalucerodenis@gmail.com",
       "name_user": "carla denis",
@@ -71,6 +58,19 @@
       "phone": "0375515273161",
       "city_user": "Obera",
       "isValidateForOwner": false
+    },
+    {
+      "id": "309b",
+      "email_user": "sosagabriel79@gmail.com",
+      "name_user": "gabriel sosa",
+      "company_name": "MyProvider",
+      "zipcode_user": "3361",
+      "isProvider": true,
+      "isCompany": false,
+      "isNew": true,
+      "phone": "0375515273161",
+      "city_user": "Obera",
+      "isValidateForOwner": true
     }
   ],
   "roles": [
@@ -100,19 +100,65 @@
         "SUPERVISOR_WRITTER",
         "OPERATOR_WRITTER"
       ]
+    },
+    {
+      "id": "e5a6",
+      "isNew": true,
+      "roles": [
+        "COLABORATOR",
+        "MANAGER",
+        "OPERATOR_READER",
+        "OPERATOR_WRITTER",
+        "SUPERVISOR_READER",
+        "SUPERVISOR_WRITTER"
+      ]
+    },
+    {
+      "id": "e931",
+      "isNew": true,
+      "roles": [
+        "COLABORATOR",
+        "MANAGER",
+        "OPERATOR_READER",
+        "OPERATOR_WRITTER",
+        "SUPERVISOR_READER",
+        "SUPERVISOR_WRITTER"
+      ]
+    },
+    {
+      "id": "309b",
+      "isNew": true,
+      "roles": [
+        "COLABORATOR",
+        "MANAGER",
+        "OPERATOR_READER",
+        "OPERATOR_WRITTER",
+        "SUPERVISOR_READER",
+        "SUPERVISOR_WRITTER"
+      ]
     }
   ],
   "product": [
     {
-      "id": "2",
-      "user_id": "2",
+      "id": "217f",
+      "user_id": "e5a6",
+      "items": []
+    },
+    {
+      "id": "a195",
+      "user_id": "e931",
+      "items": []
+    },
+    {
+      "id": "b86c",
+      "user_id": "309b",
       "items": [
         {
-          "id": "dummy",
-          "category": "dummy",
-          "item_name": "dummy",
-          "quantity": 0.0,
-          "unit": "dummy"
+          "category": "Alimentos Materia Prima",
+          "item_name": "Te Verde",
+          "quantity": "100000.1",
+          "unit": "Kg",
+          "id": "b86c1"
         }
       ]
     }

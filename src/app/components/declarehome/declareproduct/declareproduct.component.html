@@ -1,17 +1,116 @@
-<h1 class="fntstyletitle" align="center">Ingrese sus datos</h1>
-   
-<div  class="row g-3">
+<h1 class="fntstyletitle" align="center">Declarar productos</h1>
+
+<div class="row g-3">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="blockinfo">
+      <p class="carrois-gothic-regular ">  <mat-icon class="icon">info</mat-icon> Debe declarar los productos disponible que posee para proveer a los clientes.</p>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
   <div class="col-md-12"></div>
 
-
   <div class="col-md-3"></div>
-  <div class="col-md-8">
-  <p class="carrois-gothic-regular ">Seleccione un boton según las opciones disponibles:</p>
-  <ul>
-    <li> <p class="carrois-gothic-regular ">Si quiere crear una compania presione  <em>"Crear Compania"</em>. </p>  </li>
-    <li> <p class="carrois-gothic-regular "> Si quiere crear un proveedor presione <em>"Crear Proveedor"</em></p> </li>
-    <li> <p class="carrois-gothic-regular "> Si quiere unirse a una compania existente presione <em>"Unirme a Compania"</em></p> </li>
-    <li> <p class="carrois-gothic-regular "> Si quiere unirse a un proveedor existente presione <em>"Unirme a Proveedor"</em></p> </li>
-   </ul>
-   <p class="carrois-gothic-regular ">Una vez finalizado un formulario presione <em>"Guardar" </em></p>
+  <div class="col-md-6">
+    @if ( product.items.length===0) {
+      <div class="blockinfo warning">
+    <p class="carrois-gothic-regular ">   <mat-icon class="icon">warning</mat-icon> Usted no tiene ningun producto declarado.</p>
   </div>
+    }
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-12"></div>
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+ 
+    <form   [formGroup]="form">
+
+      @if (  product.items.length!==0) {
+      <mat-form-field>
+        <mat-label>Productos</mat-label>
+        <mat-select [(ngModel)]="selectedUserType" (selectionChange)="select()"
+          [ngClass]="{'is-invalid': TipousuerValue?.errors || (TipousuerValue?.touched), 'is-valid':!TipousuerValue?.errors || TipousuerValue?.touched}"
+          formControlName="tipousuerValue" id="exampleInputPassword" id="exampleInputPassword1">
+          <mat-option *ngFor="let tipo of tipoUsuario" [value]="tipo">
+            {{tipo}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="TipousuerValue?.hasError('required')">Seleccione una opcion.</mat-error>
+      </mat-form-field>
+      }
+
+      <mat-form-field>
+        <input matInput type="item_name"
+          [ngClass]="{'is-invalid': ItemName?.errors || (ItemName?.touched), 'is-valid':!ItemName?.errors || ItemName?.touched}"
+          formControlName="item_name" id="item_name" aria-describedby="emailHelp"
+          placeholder="Ingrese nombre del producto">
+        <div *ngIf="ItemName?.errors || ItemName?.touched">
+          <p *ngIf="ItemName?.hasError('required')" class="text-danger">
+            El nombre del producto es requerido.
+          </p>
+          <p *ngIf="ItemName?.errors?.['minlength']" class="text-danger">
+            El nombre del producto es requerido.
+          </p>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Categorias</mat-label>
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="selectcategory()"
+          [ngClass]="{'is-invalid': Category?.errors || (Category?.touched), 'is-valid':!Category?.errors || Category?.touched}"
+          formControlName="category" id="category">
+          <mat-option *ngFor="let tipo of categoriaslist" [value]="tipo">
+            {{tipo}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="Category?.hasError('required')">Seleccione una categoria</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <input matInput type="quantity"
+          [ngClass]="{'is-invalid': Quantity?.errors || (Quantity?.touched), 'is-valid':!Quantity?.errors || Quantity?.touched}"
+          formControlName="quantity" id="quantity" aria-describedby="emailHelp"
+          placeholder="Ingrese la cantidad que posee">
+        <div *ngIf="Quantity?.errors || Quantity?.touched">
+          <p *ngIf="Quantity?.hasError('required')" class="text-danger">
+            La cantidad es requerida
+          </p>
+          <p *ngIf="Quantity?.errors?.['pattern']" class="text-danger">
+            Debe ingresar un valor numerico puede ser decimal separando con punto.
+          </p>
+        </div>
+      </mat-form-field>
+
+
+
+      <mat-form-field>
+        <mat-label>Unidad</mat-label>
+        <mat-select [(ngModel)]="selectUnit" (selectionChange)="selectUnitx()"
+          [ngClass]="{'is-invalid': Unit?.errors || (Unit?.touched), 'is-valid':!Unit?.errors || Unit?.touched}"
+          formControlName="unit" id="unit">
+          <mat-option *ngFor="let tipo of  unitslist" [value]="tipo">
+            {{tipo}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="Unit?.hasError('required')">Seleccione una unidad</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-divider></mat-divider>
+
+     
+        <button 
+        matTooltip ="Presione para continuar"
+       [disabled]="( Unit?.hasError('required'))||( Quantity?.hasError('required'))||( Quantity?.errors?.['pattern'])||( Category?.hasError('required'))||( ItemName?.hasError('required'))"
+       (click)="SaveData($event)"
+       mat-raised-button class="btn-2">Guardar</button>
+
+        
+    </form>
+
+  </div>
+  <div class="col-md-2"></div>
+</div>

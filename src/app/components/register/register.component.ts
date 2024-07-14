@@ -16,6 +16,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RoluserService } from '../../services/autorization/roluser.service';
 import { IRoles, ROL } from '../../interfaces/IRoles';
 import { elementAt, timer } from 'rxjs';
+import { ItemsService } from '../../services/provider/items.service';
+import { IProduct } from '../../interfaces/IProducts';
 
 const PrimaryWhite = '#ffffff';
 const SecondaryGrey = '#ccc';
@@ -32,11 +34,11 @@ export interface DialogData {
 }
 
 export interface DataForm {
-  companyName:string;
-  phone:string;
-  city:string;
-  zipcode:string;
-  isCompany: boolean ,
+  companyName: string;
+  phone: string;
+  city: string;
+  zipcode: string;
+  isCompany: boolean,
   IsProvider: boolean;
   IsNew: boolean;
 }
@@ -102,9 +104,9 @@ export class RegisterComponent implements OnInit {
   public secondaryColour = SecondaryGrey;
   public coloursEnabled = true;
   public loadingTemplate!: TemplateRef<any>;
-  public returnDialog:boolean=false;
-  public userbusines:IUserBussiness[]=[];
-  public roles:string[]=[];
+  public returnDialog: boolean = false;
+  public userbusines: IUserBussiness[] = [];
+  public roles: string[] = [];
   public dataselect: SelectModal = {
     NewCompany: false,
     NewProvider: false,
@@ -112,34 +114,34 @@ export class RegisterComponent implements OnInit {
     AddUserToProvider: false,
   }
 
-  rol:IRoles=  {
-    id:"",
-    isNew:false, 
+  rol: IRoles = {
+    id: "",
+    isNew: false,
     roles: [],
-   } 
-rolsearch:IRoles[]= [];
-public selectinfo:DataForm={
-  companyName:"",
-  phone:"",
-  city:"",
-  zipcode:"",
-  isCompany:false,
-  IsProvider:false,
-  IsNew:false,
-}
+  }
+  rolsearch: IRoles[] = [];
+  public selectinfo: DataForm = {
+    companyName: "",
+    phone: "",
+    city: "",
+    zipcode: "",
+    isCompany: false,
+    IsProvider: false,
+    IsNew: false,
+  }
 
-public SendDatas:IUserBussiness={
-  email_user: "",
-  name_user: "",
-  company_name: "",
-  zipcode_user:"",
-  isProvider:false,
-  isCompany:false,
-  isNew:false,
-  phone:"",
-  city_user:"",
-  isValidateForOwner:false,
-}
+  public SendDatas: IUserBussiness = {
+    email_user: "",
+    name_user: "",
+    company_name: "",
+    zipcode_user: "",
+    isProvider: false,
+    isCompany: false,
+    isNew: false,
+    phone: "",
+    city_user: "",
+    isValidateForOwner: false,
+  }
 
   public config = {
     animationType: ngxLoadingAnimationTypes.none,
@@ -151,87 +153,81 @@ public SendDatas:IUserBussiness={
 
   alerts: Alert[] = [];
 
-  constructor(private authGoogleService: AuthGoogleService, 
+  constructor(private authGoogleService: AuthGoogleService,
     private authorifgs: AuthFGSService, private serviregister: RegiserService,
-    public dialog: MatDialog,private snackBar: MatSnackBar,private router: Router,private servirol:RoluserService,private activatedRoute: ActivatedRoute) {
-  
+    public dialog: MatDialog, private snackBar: MatSnackBar, private router: Router, private servirol: RoluserService, private activatedRoute: ActivatedRoute,private provi_servi:ItemsService) {
+
     this.reset();
   }
-   OpenSnackError(error:any){
-    
+  OpenSnackError(error: any) {
+
     this.snackBar.open(error, "Try!", {
       duration: 3000,
-      panelClass:"error",
+      panelClass: "error",
     });
   }
 
 
-  openSuccess(error:any){
-    
+  openSuccess(error: any) {
+
     this.snackBar.open(error, "Success!", {
       duration: 3000,
-      panelClass:"successful",
+      panelClass: "successful",
     });
   }
 
-  id:string="";
+  id: string = "";
   ngOnInit() {
    
- const data = this.authGoogleService.getProfile();
- console.log(JSON.stringify(data));
- sessionStorage.setItem("name",data["given_name"]+" "+data["family_name"]);
- sessionStorage.setItem("picture",data["picture"]); 
-console.log(data["email"])
-this.serviregister.GetBussinessByEmail(data["email"]).subscribe({
-  next: (v) => { 
-    this.userbusines=v;
-  },
-  error: (e) => console.log(e),
-  complete: () =>  {
-   
-   
-    console.log("info"+this.userbusines)
-    this.servirol.SearchRolByID((this.userbusines[0].id||0).toString()).subscribe({
-      next: (v) => { 
-        this.rolsearch=v;
+    const data = this.authGoogleService.getProfile();
+
+    timer(4000).subscribe(x => {
+      if(data==null){
+        window.location.reload();
+      }
+    console.log(JSON.stringify(data));
+    sessionStorage.setItem("name", data["given_name"] + " " + data["family_name"]);
+    sessionStorage.setItem("picture", data["picture"]);
+    console.log(data["email"])
+    this.serviregister.GetBussinessByEmail(data["email"]).subscribe({
+      next: (v) => {
+        this.userbusines = v;
       },
       error: (e) => console.log(e),
-      complete: () =>  {
-        console.log(JSON.stringify(this.rolsearch));
-   
-       }}); 
-
-
-   }});  
-   timer(3000).subscribe(x => {
-   sessionStorage.setItem('userbussiness' ,JSON.stringify(this.userbusines[0]));
-    let roles= this.rolsearch[0].roles;
-    console.log("rOLES VALEN"+roles)
-    console.log(roles.includes(ROL.COLABORATOR))
-      if( roles.includes(ROL.COLABORATOR)){
-        sessionStorage.setItem("ROL",JSON.stringify(this.rolsearch[0] ))
+      complete: () => {
+        console.log("info" + this.userbusines.length)
+        if (this.userbusines.length!=0) {
+          
+       
+        this.servirol.SearchRolByID((this.userbusines[0].id || 0).toString()).subscribe({
+          next: (v) => {
+            this.rolsearch = v;
+          },
+          error: (e) => console.log(e),
+          complete: () => {
+            console.log(JSON.stringify(this.rolsearch));
+          }
+        }); }
+      }
+    });
+    
+    timer(1500).subscribe(x => {
+      if (this.userbusines.length!=0) {
+      sessionStorage.setItem('userbussiness', JSON.stringify(this.userbusines[0]));
+      let roles = this.rolsearch[0].roles;
+      console.log("ROLES VALEN" + roles);
+      console.log(roles.includes(ROL.COLABORATOR))
+      if (roles.includes(ROL.COLABORATOR)) {
+        sessionStorage.setItem("ROL", JSON.stringify(this.rolsearch[0]))
         this.router.navigate(['/home'])
-      }else{
+      } else {
         this.router.navigate(['/forbidden'])
       }
-
- 
-    
-    
-    
-     });
- 
-
-        
- 
-       
-     
-      
-          
-
-
-
-
+    }else{
+      this.loading=false;
+    } 
+    });
+  });
   }
 
 
@@ -243,10 +239,10 @@ this.serviregister.GetBussinessByEmail(data["email"]).subscribe({
     this.alerts = Array.from(ALERTS);
   }
   showData() {
-    console.log(this.authGoogleService.getProfile() )
+    console.log(this.authGoogleService.getProfile())
     const data = this.authGoogleService.getProfile();
-    sessionStorage.setItem("name",data["name"]);
- console.log(data["name"]);
+    sessionStorage.setItem("name", data["name"]);
+    console.log(data["name"]);
   }
 
   getToken() {
@@ -257,131 +253,155 @@ this.serviregister.GetBussinessByEmail(data["email"]).subscribe({
 
   //Bloque de codigo del modal
   openDialog(datax: string): void {
-  this.dataselect  = {
+    this.dataselect = {
       NewCompany: false,
       NewProvider: false,
       AddUserToCompant: false,
       AddUserToProvider: false,
     }
-     this.selectinfo={
-      companyName:"",
-      phone:"",
-      city:"",
-      zipcode:"",
-      isCompany:false,
-      IsProvider:false,
-      IsNew:false,
+    this.selectinfo = {
+      companyName: "",
+      phone: "",
+      city: "",
+      zipcode: "",
+      isCompany: false,
+      IsProvider: false,
+      IsNew: false,
     }
-    this.SendDatas={
+    this.SendDatas = {
       email_user: "",
       name_user: "",
       company_name: "",
-      zipcode_user:"",
-      isProvider:false,
-      isCompany:false,
-      isNew:false,
-      phone:"",
-      city_user:"",
-      isValidateForOwner:false,
+      zipcode_user: "",
+      isProvider: false,
+      isCompany: false,
+      isNew: false,
+      phone: "",
+      city_user: "",
+      isValidateForOwner: false,
     }
     if (datax == 'Newcompany') {
-this.dataselect.NewCompany=true;
-this.dataselect.AddUserToCompant=false;
-this.dataselect.NewProvider=false;
-this.dataselect.AddUserToProvider=false;
+      this.dataselect.NewCompany = true;
+      this.dataselect.AddUserToCompant = false;
+      this.dataselect.NewProvider = false;
+      this.dataselect.AddUserToProvider = false;
     }
     if (datax == 'Newprovider') {
-      this.dataselect.NewCompany=false;
-      this.dataselect.AddUserToCompant=false;
-      this.dataselect.NewProvider=true;
-      this.dataselect.AddUserToProvider=false;
+      this.dataselect.NewCompany = false;
+      this.dataselect.AddUserToCompant = false;
+      this.dataselect.NewProvider = true;
+      this.dataselect.AddUserToProvider = false;
     }
     if (datax == 'addCompany') {
-      this.dataselect.NewCompany=false;
-      this.dataselect.AddUserToCompant=true;
-      this.dataselect.NewProvider=false;
-      this.dataselect.AddUserToProvider=false;
+      this.dataselect.NewCompany = false;
+      this.dataselect.AddUserToCompant = true;
+      this.dataselect.NewProvider = false;
+      this.dataselect.AddUserToProvider = false;
     }
     if (datax == 'addProvider') {
-      this.dataselect.NewCompany=false;
-      this.dataselect.AddUserToCompant=false;
-      this.dataselect.NewProvider=false;
-      this.dataselect.AddUserToProvider=true;
+      this.dataselect.NewCompany = false;
+      this.dataselect.AddUserToCompant = false;
+      this.dataselect.NewProvider = false;
+      this.dataselect.AddUserToProvider = true;
     }
 
 
     const dialogRef = this.dialog.open(ModalComponent, {
-      data:this.dataselect,
+      data: this.dataselect,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("el valorde resul vale "+JSON.stringify(result))  ;
-      if (result!=undefined){
-        this.selectinfo=result
+      console.log("el valorde resul vale " + JSON.stringify(result));
+      if (result != undefined) {
+        this.selectinfo = result
       }
-      
-      this.returnDialog=true
-      console.log("el valr de info es "+JSON.stringify(this.selectinfo))
+
+      this.returnDialog = true
+      console.log("el valr de info es " + JSON.stringify(this.selectinfo))
     });
     //debemos limpiar las variables porque quedan guardadas con el valor actual...
-  
-  }
 
-  response:IUserBussiness={
+  }
+  item:IProduct={
+     user_id:"",
+      items:[]
+     }
+     itemresponse:IProduct={
+      user_id:"",
+       items:[]
+      }    
+ 
+  response: IUserBussiness = {
     email_user: "",
     name_user: "",
     company_name: "",
-    zipcode_user:"",
-    isProvider:false,
-    isCompany:false,
-    isNew:false,
-    phone:"",
-    city_user:"",
-    isValidateForOwner:false,
+    zipcode_user: "",
+    isProvider: false,
+    isCompany: false,
+    isNew: false,
+    phone: "",
+    city_user: "",
+    isValidateForOwner: false,
   };
 
 
-  SaveChanges(){
-   this.SendDatas.email_user=this.authGoogleService.getProfile()["email"];
-    this.SendDatas.company_name=this.selectinfo.companyName;
-    this.SendDatas.city_user=this.selectinfo.city;
-    this.SendDatas.isCompany=this.selectinfo.isCompany;
-    this.SendDatas.isNew=this.selectinfo.IsNew;
-    this.SendDatas.isProvider=this.selectinfo.IsProvider;
-    this.SendDatas.isValidateForOwner=this.selectinfo.IsNew;//si es nuevo siempre en true
-    this.SendDatas.phone=this.selectinfo.phone;
-    this.SendDatas.zipcode_user=this.selectinfo.zipcode;
-    this.SendDatas.name_user=this.authGoogleService.getProfile()["given_name"]+" "+this.authGoogleService.getProfile()["family_name"];
-    
+  SaveChanges() {
+    this.SendDatas.email_user = this.authGoogleService.getProfile()["email"];
+    this.SendDatas.company_name = this.selectinfo.companyName;
+    this.SendDatas.city_user = this.selectinfo.city;
+    this.SendDatas.isCompany = this.selectinfo.isCompany;
+    this.SendDatas.isNew = this.selectinfo.IsNew;
+    this.SendDatas.isProvider = this.selectinfo.IsProvider;
+    this.SendDatas.isValidateForOwner = this.selectinfo.IsNew;//si es nuevo siempre en true
+    this.SendDatas.phone = this.selectinfo.phone;
+    this.SendDatas.zipcode_user = this.selectinfo.zipcode;
+    this.SendDatas.name_user = this.authGoogleService.getProfile()["given_name"] + " " + this.authGoogleService.getProfile()["family_name"];
     this.serviregister.CreateUserbussiness(this.SendDatas).subscribe({
-      next: (v) =>this.response=v,
+      next: (v) => this.response = v,
       error: (e) => this.OpenSnackError(""),
-      complete: () =>  {
-        const id=this.response.id||0;
-        this.rol.id=id.toString();
-        this.rol.isNew=this.response.isNew;
-        if(this.response.isNew){
-          this.rol.roles=[ROL.COLABORATOR,ROL.MANAGER,ROL.OPERATOR_READER,ROL.OPERATOR_WRITTER,
-            ROL.SUPERVISOR_READER,ROL.SUPERVISOR_WRITTER
+      complete: () => {
+        const id = this.response.id || 0;
+        this.rol.id = id.toString();
+        this.rol.isNew = this.response.isNew;
+        if (this.response.isNew) {
+          this.rol.roles = [ROL.COLABORATOR, ROL.MANAGER, ROL.OPERATOR_READER, ROL.OPERATOR_WRITTER,
+          ROL.SUPERVISOR_READER, ROL.SUPERVISOR_WRITTER
           ];
-        }else{
-          this.rol.roles=[];
+        } else {
+          this.rol.roles = [];
         }
         this.servirol.CreateRol(this.rol).subscribe({
-          next: (v) =>console.log(v),
+          next: (v) => console.log(v),
           error: (e) => this.OpenSnackError(e),
-          complete: () =>  {
-            sessionStorage.setItem('rol',JSON.stringify(this.rol));
-            this.openSuccess("");
-            this.router.navigate(['/home'])
-
-          }});
+          complete: () => {
+            sessionStorage.setItem('rol', JSON.stringify(this.rol));
+            if (this.response.isProvider) {
+              this.item.user_id=(this.response.id||0).toString();
+              this.provi_servi.CreateProduct(this.item).subscribe({                
+                  next: (v) => this.itemresponse=v ,
+                  error: (e) => this.OpenSnackError(e),
+                  complete: () => {
+                    sessionStorage.setItem('items', JSON.stringify(this.itemresponse));
+                    this.openSuccess("");
+                    this.router.navigate(['/home'])
+                  }
+              });                     
+            }else{
+              this.router.navigate(['/home'])
+            }            
+          }
+        });
+       
       }
     }
+    );
+    this.loading=true;
+    timer(3000).subscribe(x=>{
+      window.location.reload();
+      this.loading=false;
+    }
+      
     )
-
-
     console.log(JSON.stringify(this.SendDatas))
- 
   }
 }

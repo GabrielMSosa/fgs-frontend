@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class AuthGoogleService {
   login() {
     this.oauthService.initLoginFlow();
   }
+//: Observable<IUser[]>
 
   logout() {
     this.oauthService.logOut();

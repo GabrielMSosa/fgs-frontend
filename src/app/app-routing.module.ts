@@ -9,6 +9,7 @@ import { ForbidenComponent } from './components/errorpages/forbiden/forbiden.com
 import { HomeasociateComponent } from './components/asociate/homeasociate/homeasociate.component';
 import { ROL } from './interfaces/IRoles';
 import { DeclareproductComponent } from './components/declarehome/declareproduct/declareproduct.component';
+import { itemsproviderResolver } from './resolver/itemsprovider.resolver';
 
 
 const routes: Routes = [
@@ -43,7 +44,8 @@ const routes: Routes = [
         data: {
           allowedRoles: [ROL.COLABORATOR.toString(), ROL.MANAGER.toString()],
           allowType: ["PROVIDER"]
-        }
+        },
+        resolve:{items:itemsproviderResolver}
       },
 
       

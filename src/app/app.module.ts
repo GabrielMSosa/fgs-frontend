@@ -77,7 +77,8 @@ import { DeclareproductComponent } from './components/declarehome/declareproduct
      MatSidenavModule,
      MatTableModule,
      MatAutocompleteModule,
-     MatChipsModule
+     MatChipsModule,
+     MatInputModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
