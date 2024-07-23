@@ -18,29 +18,71 @@
   </div>
     }
   </div>
+  <div class="col-md-3"></div>
+  <div class="col-md-3"></div>
+  <div class="col-md-2"></div>
+  <div class="col-md-1">
+  <button 
+  matTooltip ="Editar un producto que ya tenes creado"
+  (click)="EditItem()"
+  mat-raised-button class="btn-1">Editar</button>
 </div>
+<div class="col-md-1">
+  <button 
+  (click)="NewItem()"
+  matTooltip ="Crear nuevo producto"
+  mat-raised-button class="btn-1">Nuevo</button>
+</div>
+
+</div>
+ 
 
 <div class="row g-3">
   <div class="col-md-12"></div>
   <div class="col-md-3"></div>
-  <div class="col-md-6">
+  <div class="col-md-6">  
  
+<form
+*ngIf="preedit&&!edit"
+[formGroup]="form_0"
+>
+  <mat-form-field
+  
+  >
+    <mat-label>Productos</mat-label>
+    <mat-select [(ngModel)]="SelectorProduct"  (selectionChange)="SelectProduct()"
+      [ngClass]="{'is-invalid': (Product?.errors || (Product?.touched)), 'is-valid':(!Product?.errors || Product?.touched)}"
+      formControlName="product" id="product" id="product">
+      <mat-option *ngFor="let tipo of product.items" [value]="tipo">
+        {{tipo.item_name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="Product?.hasError('required')">Seleccione una opcion.</mat-error>
+  </mat-form-field>
+  <mat-divider></mat-divider>  
+  <button 
+  matTooltip ="Presione para Seleccionar"
+ [disabled]="(!enable_next)"
+ (click)="SelectItem()"
+ mat-raised-button class="btn-2">Seleccionar</button>   
+
+
+</form>
+</div>
+</div>
+
+
+ 
+
+
+
+<div class="row g-3">
+  <div class="col-md-12"></div>
+  <div class="col-md-3"></div>
+  <div class="col-md-6">  
+
     <form   [formGroup]="form">
-
-      @if (  product.items.length!==0) {
-      <mat-form-field>
-        <mat-label>Productos</mat-label>
-        <mat-select [(ngModel)]="selectedUserType" (selectionChange)="select()"
-          [ngClass]="{'is-invalid': TipousuerValue?.errors || (TipousuerValue?.touched), 'is-valid':!TipousuerValue?.errors || TipousuerValue?.touched}"
-          formControlName="tipousuerValue" id="exampleInputPassword" id="exampleInputPassword1">
-          <mat-option *ngFor="let tipo of tipoUsuario" [value]="tipo">
-            {{tipo}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="TipousuerValue?.hasError('required')">Seleccione una opcion.</mat-error>
-      </mat-form-field>
-      }
-
+      @if ( edit===true|| new===true||product.items.length===0) {
       <mat-form-field>
         <input matInput type="item_name"
           [ngClass]="{'is-invalid': ItemName?.errors || (ItemName?.touched), 'is-valid':!ItemName?.errors || ItemName?.touched}"
@@ -83,9 +125,6 @@
           </p>
         </div>
       </mat-form-field>
-
-
-
       <mat-form-field>
         <mat-label>Unidad</mat-label>
         <mat-select [(ngModel)]="selectUnit" (selectionChange)="selectUnitx()"
@@ -98,17 +137,13 @@
         <mat-error *ngIf="Unit?.hasError('required')">Seleccione una unidad</mat-error>
       </mat-form-field>
       <br>
-
-      <mat-divider></mat-divider>
-
-     
+      <mat-divider></mat-divider>  
         <button 
         matTooltip ="Presione para continuar"
        [disabled]="( Unit?.hasError('required'))||( Quantity?.hasError('required'))||( Quantity?.errors?.['pattern'])||( Category?.hasError('required'))||( ItemName?.hasError('required'))"
        (click)="SaveData($event)"
-       mat-raised-button class="btn-2">Guardar</button>
-
-        
+       mat-raised-button class="btn-2">Guardar</button>     
+      }
     </form>
 
   </div>
