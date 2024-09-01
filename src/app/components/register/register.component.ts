@@ -180,7 +180,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
    
     const data = this.authGoogleService.getProfile();
-
+    console.log("el token vale "+ this.authGoogleService.getToken())
     timer(4000).subscribe(x => {
       if(data==null){
         window.location.reload();
@@ -197,8 +197,7 @@ export class RegisterComponent implements OnInit {
       complete: () => {
         console.log("info" + this.userbusines.length)
         if (this.userbusines.length!=0) {
-          
-       
+         
         this.servirol.SearchRolByID((this.userbusines[0].id || 0).toString()).subscribe({
           next: (v) => {
             this.rolsearch = v;
@@ -346,6 +345,7 @@ export class RegisterComponent implements OnInit {
 
 
   SaveChanges() {
+    
     this.SendDatas.email_user = this.authGoogleService.getProfile()["email"];
     this.SendDatas.company_name = this.selectinfo.companyName;
     this.SendDatas.city_user = this.selectinfo.city;

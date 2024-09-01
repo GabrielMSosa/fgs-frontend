@@ -4,8 +4,7 @@ export interface IMenuLateral {
   router_link:string;
   isSubMenu:boolean; 
   submenu:SubMenu[];
-
-  }  
+}  
 
 
   export interface SubMenu {

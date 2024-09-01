@@ -67,8 +67,7 @@ export class DeclareproductComponent {
   form_0:FormGroup;
   constructor(private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private serviitem: ItemsService, private snackBar: MatSnackBar, private router: Router,) {
     this.form = this.formBuilder.group({
-      category: ['', [Validators.required]],
-     
+      category: ['', [Validators.required]],   
       item_name: ['', [Validators.required, Validators.minLength(3)]],
       quantity: ['', [Validators.required, Validators.pattern("[+]?([0-9]*[.])?[0-9]+")]],
       unit: ['', [Validators.required]],

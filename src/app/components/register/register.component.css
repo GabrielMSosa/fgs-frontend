@@ -58,7 +58,4 @@
     font-style: normal;
   }
   
-  .successful{
-    color: white;
-    --mdc-snackbar-container-color: #00ff37 !important;
-  }
+  
